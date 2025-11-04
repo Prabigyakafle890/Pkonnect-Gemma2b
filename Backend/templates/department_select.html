@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Select Department - PKonnect</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <div class="container" style="max-width: 400px; margin: 80px auto; background: #fff; border-radius: 16px; box-shadow: 0 2px 16px rgba(63,81,181,0.10); padding: 32px;">
+    <h2 style="text-align:center;">Select Your Department</h2>
+    <form method="POST" action="{{ url_for('chatbot_bp.select_department') }}">
+      <div style="margin: 20px 0;">
+        <label>
+          <input type="radio" name="department" value="BSC CSIT" required>
+          BSC CSIT
+        </label>
+        <br>
+        <label>
+          <input type="radio" name="department" value="BIT" required>
+          BIT
+        </label>
+      </div>
+      <button type="submit" class="btn primary" style="width:100%;">Next</button>
+    </form>
+  </div>
+</body>
+</html>

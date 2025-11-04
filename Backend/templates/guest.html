@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Guest Access - PKonnect</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/guest.css') }}">
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+<body class="plain-bg">
+  <div class="fade-in container">
+    <h2>Hello, Guest 👋</h2>
+    <p>Choose how you'd like to proceed</p>
+    <div class="button-group">
+      <div id="g_id_signin"></div>
+      <a href="{{ url_for('chatbot_bp.chatbot') }}" class="btn">Continue without Login</a>
+    </div>
+  </div>
+  <script>
+    function handleCredentialResponse(response) {
+      fetch("{{ url_for('chatbot_bp.google_callback') }}", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ credential: response.credential })
+      }).then(() => {
+        window.location.href = "{{ url_for('chatbot_bp.chatbot') }}";
+      });
+    }
+
+    window.onload = function() {
+      google.accounts.id.initialize({
+        client_id: "19511097944-j30eq2l672h8fbfu30415rn78crvt5om.apps.googleusercontent.com",
+        callback: handleCredentialResponse,
+        ux_mode: "popup"
+      });
+      google.accounts.id.renderButton(
+        document.getElementById("g_id_signin"),
+        { theme: "outline", size: "large", text: "continue_with", shape: "rectangular" }
+      );
+    };
+  </script>
+</body>
+</html>

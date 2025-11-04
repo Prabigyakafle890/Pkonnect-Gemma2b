@@ -1,0 +1,152 @@
+/* RESET + BASE */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body, html {
+  height: 100%;
+  font-family: 'Segoe UI', 'Inter', sans-serif;
+ 
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+body {
+  background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
+            url('../img/pk_college.png');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  color: white;
+}
+
+
+/* CONTAINER */
+.container {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(10px);
+  padding: 50px 30px;
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  max-width: 420px;
+  width: 90%;
+  animation: fadeIn 0.8s ease;
+}
+
+.container h2 {
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+.container p {
+  font-size: 1.1rem;
+  margin-bottom: 30px;
+  color: #f0f0f0;
+}
+
+/* BUTTONS */
+.button-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+.btn {
+  width: 100%;
+  max-width: 320px;
+  padding: 14px 0;
+  border-radius: 8px;
+  font-size: 1.08rem;
+  font-weight: 500;
+  background: #fff;
+  color: #3f51b5;
+  border: 2px solid #3f51b5;
+  box-shadow: 0 2px 8px rgba(63,81,181,0.08);
+  text-align: center;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, border 0.2s;
+  text-decoration: none; /* Removes underline */
+  margin-top: 8px;
+}
+
+.btn:hover {
+  background: #3f51b5;
+  color: #fff;
+  border-color: #283593;
+}
+
+/* Optional: Make Google button container same width */
+#g_id_signin {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+/* Style for both buttons */
+.custom-google-btn,
+.custom-google-btn .abcRioButton {
+  display: inline-block;
+  width: 100%;
+  max-width: 320px;
+  margin-bottom: 16px;
+  border-radius: 22px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(63,81,181,0.08);
+}
+
+.custom-google-btn .abcRioButton,
+.btn.custom-google-btn {
+  background: #3f51b5 !important;
+  color: #fff !important;
+  border: none !important;
+  font-size: 1.1rem !important;
+  font-weight: 600;
+  padding: 12px 0 !important;
+  border-radius: 22px !important;
+  transition: background 0.2s, color 0.2s, transform 0.2s, box-shadow 0.2s;
+  text-align: center;
+  cursor: pointer;
+}
+
+.custom-google-btn .abcRioButton:hover,
+.btn.custom-google-btn:hover {
+  background: #283593 !important;
+  color: #fff !important;
+  transform: translateY(-2px) scale(1.04);
+  box-shadow: 0 4px 16px rgba(63,81,181,0.13);
+}
+
+/* Remove Google logo if you want a fully unified look (optional) */
+.custom-google-btn .abcRioButtonIcon {
+  display: none !important;
+}
+
+/* ANIMATION */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* RESPONSIVE */
+@media (max-width: 480px) {
+  .container {
+    padding: 30px 20px;
+  }
+
+  .btn {
+    font-size: 0.95rem;
+  }
+}

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PKonnect - College Chatbot</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+<body class="plain-bg">
+
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="logo">
+      <img src="{{ url_for('static', filename='img/image.png') }}" alt="Padma Kanya Logo" class="logo-img"/>
+      <span>Padma Kanya <span class="logo-accent">College</span></span>
+    </div>
+    <nav>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <main class="hero-section">
+    <div class="hero-content">
+      <h1>Welcome to <span class="emphasis">PKonnect</span></h1>
+      <p class="subtext">Your intelligent assistant at Padma Kanya Multiple Campus</p>
+      <div class="button-group">
+        <a href="{{ url_for('chatbot_bp.guest') }}" class="btn primary animated-btn">Continue as Guest</a>
+        <a href="{{ url_for('chatbot_bp.select_department') }}" class="btn secondary animated-btn">Institutional Member</a>
+      </div>
+    </div>
+  </main>
+
+  <!-- Sign-In Modal -->
+  <div id="loginModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <h3>Sign in with your College Email</h3>
+      <div id="g_id_onload"
+        data-client_id="YOUR_GOOGLE_CLIENT_ID"
+        data-context="signin"
+        data-ux_mode="popup"
+        data-login_uri="{{ url_for('chatbot_bp.chatbot') }}"
+        data-auto_prompt="false">
+      </div>
+      <div class="g_id_signin"
+        data-type="standard"
+        data-size="large"
+        data-theme="outline"
+        data-text="sign_in_with"
+        data-shape="rectangular"
+        data-logo_alignment="left">
+      </div>
+    </div>
+  </div>
+
+  <!-- Institution Login Modal -->
+  <div id="institutionModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeInstitutionModal()">&times;</span>
+      <h3>Institutional Member Login</h3>
+      <form id="institutionLoginForm">
+        <input type="email" id="institutionEmail" placeholder="Enter your college email" required style="width: 100%; padding: 8px; margin-bottom: 12px;">
+        <button type="submit" class="btn primary" style="width: 100%;">Login</button>
+      </form>
+      <div id="institutionLoginError" style="color: red; margin-top: 8px; display: none;"></div>
+    </div>
+  </div>
+
+  <!-- About Section -->
+  <section id="about" class="info-section">
+    <div class="section-content">
+      <h2>About PKonnect</h2>
+      <p>
+        PKonnect is a smart chatbot platform designed to streamline access to academic information, assist students and guests, 
+        and improve communication within Padma Kanya Multiple Campus.
+      </p>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact" class="info-section">
+    <div class="section-content">
+      <h2>Contact Us</h2>
+      <p>Email: pkonnect@pkcampus.edu.np</p>
+      <p>Phone: 01-XXXXXXX</p>
+      <p>Location: Bagbazar, Kathmandu, Nepal</p>
+    </div>
+  </section>
+
+  <script>
+    function openModal() {
+      document.getElementById('loginModal').style.display = 'block';
+    }
+
+    function closeModal() {
+      document.getElementById('loginModal').style.display = 'none';
+    }
+
+    function openInstitutionModal() {
+      document.getElementById('institutionModal').style.display = 'block';
+    }
+
+    function closeInstitutionModal() {
+      document.getElementById('institutionModal').style.display = 'none';
+      document.getElementById('institutionLoginError').style.display = 'none';
+    }
+
+    window.onclick = function(event) {
+      const modal = document.getElementById('loginModal');
+      if (event.target === modal) {
+        modal.style.display = "none";
+      }
+      const institutionModal = document.getElementById('institutionModal');
+      if (event.target === institutionModal) {
+        institutionModal.style.display = "none";
+      }
+    }
+
+    document.getElementById('institutionLoginForm').onsubmit = function(e) {
+      e.preventDefault();
+      const email = document.getElementById('institutionEmail').value;
+      fetch('/student-login', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({email})
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          window.location.href = '/student';
+        } else {
+          document.getElementById('institutionLoginError').innerText = data.message;
+          document.getElementById('institutionLoginError').style.display = 'block';
+        }
+      });
+    };
+  </script>
+  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+</body>
+</html>

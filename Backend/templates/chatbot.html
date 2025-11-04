@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>PKonnect Messenger</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/chatbot.css') }}">
+</head>
+<body>
+  <div class="chat-container">
+    <div class="chat-header">
+      PKonnect Messenger
+      <button onclick="login()" style="float:right; background:#fff; color:#4267b2; border:none; border-radius:12px; padding:4px 12px; margin-top:-4px; font-size:0.9rem; cursor:pointer;">Login</button>
+    </div>
+    <div id="chat-box" class="chat-box"></div>
+    <form class="chat-input-area" onsubmit="sendMessage(event)">
+      <input type="text" id="msg" placeholder="Type your message..." autocomplete="off" />
+      <button type="submit">Send</button>
+    </form>
+  </div>
+  <script>
+    const chatBox = document.getElementById("chat-box");
+    const msgInput = document.getElementById("msg");
+
+    window.onload = function() {
+      fetch('/history')
+        .then(res => res.json())
+        .then(data => {
+          if (data.history) {
+            data.history.forEach(item => {
+              appendMessage(item.question, "user");
+              appendMessage(item.answer, "bot");
+            });
+          }
+        });
+    };
+
+    function appendMessage(text, sender) {
+      const bubble = document.createElement("div");
+      bubble.className = "bubble " + sender;
+      bubble.textContent = text;
+      chatBox.appendChild(bubble);
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    async function login() {
+      const email = prompt("Enter your institutional email:");
+      if (!email) return;
+
+      const res = await fetch("/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email })
+      });
+
+      const data = await res.json();
+      alert("Logged in as: " + data.user_type);
+    }
+
+    async function sendMessage(e) {
+      e.preventDefault();
+      const message = msgInput.value.trim();
+      if (!message) return;
+      appendMessage(message, "user");
+      msgInput.value = "";
+
+      try {
+        const response = await fetch('/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            message: message,
+            email: 'guest@padmakanya.edu.np',
+            department: 'CSIT'
+          })
+        });
+        const data = await response.json();
+        const botResponse = data.response || "Sorry, I didn't understand that.";
+        appendMessage(botResponse, "bot");
+      } catch (err) {
+        appendMessage("Couldn't reach server.", "bot");
+      }
+    }
+  </script>
+</body>
+</html>
