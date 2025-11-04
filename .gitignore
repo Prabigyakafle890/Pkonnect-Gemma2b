@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+env/
+venv/
+ENV/
+.env
+*.env
+
+# VSCode, OS
+.vscode/
+.idea/
+*.log
+Thumbs.db
+.DS_Store
+
+# OneDrive/Windows temp
+~$*
